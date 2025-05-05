@@ -1,6 +1,6 @@
 <?php
 
-	require_once(ROOT. "/utils/IDao.php");
+	require_once("../utils/IDao.php");
 
 	abstract class AbstractDao implements IDao {
 

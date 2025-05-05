@@ -1,11 +1,11 @@
 <?php
 
-	require_once(ROOT . "/utils/IService.php");
-	require_once(ROOT . "/utils/AbstractService.php");
-	require_once(ROOT . "/utils/IDao.php");
-	require_once(ROOT . "/dao/CompteDao.php");
-	require_once(ROOT . "/services/RoleService.php");
-	require_once(ROOT . "/model/Compte.php");
+	require_once("../utils/IService.php");
+	require_once("../utils/AbstractService.php");
+	require_once("../utils/IDao.php");
+	require_once("../dao/CompteDao.php");
+	require_once("../services/RoleService.php");
+	require_once("../model/Compte.php");
 
 	class CompteService extends AbstractService implements IService {
 		private CompteDao $dao;
@@ -24,9 +24,10 @@
 			// Code métier, un compte est forcément un Rédacteur
 			$role = $this->roleService->findById(1);
 			$c->setRole($role);
-                        return $this->getDao()->insert($c);
-                }
+            return $this->getDao()->insert($c);
+		}		
 
+		// A Faire
 		function login($compte) {
 			return $this->getDao()->login($compte);
 		}

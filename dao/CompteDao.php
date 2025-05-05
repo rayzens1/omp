@@ -1,9 +1,9 @@
 <?php
-	require_once(ROOT . "/utils/IDao.php");
-	require_once(ROOT . "/utils/AbstractDao.php");
-	require_once(ROOT . "/utils/BddSingleton.php");
-	require_once(ROOT . "/model/Compte.php");
-	require_once(ROOT . "/dao/RoleDao.php");
+	require_once("../utils/IDao.php");
+	require_once("../utils/AbstractDao.php");
+	require_once("../utils/BddSingleton.php");
+	require_once("../model/Compte.php");
+	require_once("../dao/RoleDao.php");
 
 	class CompteDao extends AbstractDao implements IDao {
 
@@ -26,7 +26,8 @@
 
 			$compte = Compte::createFromRow($row) ;
 
-			$compte->setRole($this->roleDao->findById($row['fk_role']));
+			var_dump($row);	
+			$compte->setRole($this->roleDao->findById($row->fk_role));
 
 			return $compte ;
 		}
@@ -34,14 +35,14 @@
 		function insert(IEntity $compte) : int {
 			$pdo = BddSingleton::getInstance()->getPdo();
 			$sql = "INSERT INTO Compte ("
-				. "login, password, pseudo, dateCreation, dateModification, estSupprime, estSignale, estBanni, enAttenteDeModeration, fk_role) "
-				. " VALUES (:log, :pwd, :pseudo, :dCreation, :dMod, :estSupp, :estSign, :estBan, :enAttMod, :idRole)";
+				. "email, password, username, dateCreation, dateModification, estSupprime, estSignale, estBanni, enAttenteDeModeration, fk_role) "
+				. " VALUES (:mail, :pwd, :username, :dCreation, :dMod, :estSupp, :estSign, :estBan, :enAttMod, :idRole)";
 			$stmt = $pdo->prepare($sql);
-			$stmt->bindValue(":log", $compte->getLogin() );
-			$stmt->bindValue(":pwd", hashPassword( $compte->getPassword() ) );
-			$stmt->bindValue(":pseudo", $compte->getPseudo() );
-			$stmt->bindValue(":dCreation", $compte->getDateCreation()->format(MYSQL_DATE_FORMAT) );
-			$stmt->bindValue(":dMod", $compte->getDateModification()->format(MYSQL_DATE_FORMAT) );
+			$stmt->bindValue(":mail", $compte->getEmail() );
+			$stmt->bindValue(":pwd", password_hash( $compte->getPassword(), PASSWORD_BCRYPT) );
+			$stmt->bindValue(":username", $compte->getUsername() );
+			$stmt->bindValue(":dCreation", $compte->getDateCreation()->format('Y-m-d H:i:s') );
+			$stmt->bindValue(":dMod", $compte->getDateModification()->format('Y-m-d H:i:s') );
 			$stmt->bindValue(":estSupp", $compte->estSupprime(), PDO::PARAM_BOOL);
 			$stmt->bindValue(":estSign", $compte->estSignale(), PDO::PARAM_BOOL);
 			$stmt->bindValue(":estBan", $compte->estBanni(), PDO::PARAM_BOOL);

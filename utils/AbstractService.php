@@ -1,6 +1,6 @@
 <?php
-	require_once(ROOT . "/utils/IService.php");
-	require_once(ROOT . "/utils/IDao.php");
+	require_once("../utils/IService.php");
+	require_once("../utils/IDao.php");
 
 	abstract class AbstractService implements IService {
 		// Chaque Service concret me fournira son DAO

@@ -13,10 +13,10 @@
 
 		private function __construct() {
 			// TODO : coller les param de connexion bdd dans un fichier puis include
-			$DSN = "mysql:host=localhost;port=3306;dbname=bge_blog_nrb";
+			$DSN = "mysql:host=localhost;port=3306;dbname=omp_blog";
 			try {
 				// $this->pdo = new PDO($DSN, 'bge_blog_nrb', 'azerty-12');
-				$this->pdo = new PDO($DSN,'bge_blog_nrb','azerty-12',
+				$this->pdo = new PDO($DSN,'omp','Azert123',
 					array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
 				);
 				// Activation des messages d'erreur PDO, car il n'est pas assez bavard

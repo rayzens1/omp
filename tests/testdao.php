@@ -9,11 +9,15 @@
 
     $objCompte = $objCompteDao->findById(1) ;
 
+    $roleLabel = $objCompte->getRole()->getLabel();
+
 //    var_dump($objCompte) ;
 
     echo '<br/><br/>Utilisateur 1<br/><br/>' ;
 
     echo json_encode($objCompte) ;
+
+    echo '<br/><br/>Role '. $roleLabel .'<br/>' ;
 
     echo '<br/><br/>Utilisateur 10<br/><br/>' ;
 

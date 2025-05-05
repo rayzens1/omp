@@ -1,11 +1,11 @@
 <?php
 
-	require_once(ROOT . "/utils/IEntity.php");
-	require_once(ROOT . "/utils/AbstractEntity.php");
+	require_once("../utils/IEntity.php");
+	require_once("../utils/AbstractEntity.php");
 
 	class Compte extends AbstractEntity implements IEntity {
 		private $idCompte;
-		private $login;
+		private $email;
 		private $password;
 		private $dateCreation;
 		private $dateModification;
@@ -17,7 +17,7 @@
 
 		private $estSignale;
 		private $estBanni;
-		private $pseudo;
+		private $username;
 
 		function __contruct() { /* RAS */ }
 
@@ -29,12 +29,12 @@
 			$this->idCompte = $id;
 		}
 
-		function getLogin() : string {
-			return $this->login;
+		function getEmail() : string {
+			return $this->email;
 		}
 
-		function setLogin(string $login) {
-			$this->login = $login;
+		function setEmail(string $email) {
+			$this->email = $email;
 		}
 
 		function getPassword() : string {
@@ -93,12 +93,12 @@
 			return $this->estBanni;
 		}
 
-		function getPseudo() : string {
-			return $this->pseudo;
+		function getUsername() : string {
+			return $this->username;
 		}
 
-		function setPseudo(string $s) {
-			$this->pseudo = $s;
+		function setUsername(string $s) {
+			$this->username = $s;
 		}
 
 		function getRole() : Role {
@@ -112,8 +112,8 @@
 		public static function createFromRow($row, bool $keepPassword = false) {
 			$compte = new Compte();
 			$compte->setIdCompte( intval($row->id_compte) );
-			$compte->setLogin( $row->login );
-			$compte->setPseudo($row->pseudo); // ICI
+			$compte->setEmail( $row->email );
+			$compte->setUsername($row->username); // ICI
 			$compte->setPassword( $keepPassword ? $row->password : NULL );
 			$compte->setDateCreation( new DateTime($row->dateCreation) );
 			$compte->setDateModification( new DateTime($row->dateModification) );
@@ -124,10 +124,10 @@
 			return $compte;
 		}
 
-		public static function create($email, $pseudo, $password) {
+		public static function create($email, $username, $password) {
 			$compte = new Compte();
-			$compte->setLogin( $email );
-			$compte->setPseudo($pseudo); // ICI
+			$compte->setEmail( $email );
+			$compte->setUsername($username); // ICI
                         $compte->setPassword( $password );
                         $compte->setDateCreation( new DateTime() );
                         $compte->setDateModification( new DateTime() );
