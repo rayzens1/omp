@@ -7,6 +7,8 @@
 	require_once("../services/RoleService.php");
 	require_once("../model/Compte.php");
 
+	// Service => Règles métier
+
 	class CompteService extends AbstractService implements IService {
 		private CompteDao $dao;
 		private RoleService $roleService;

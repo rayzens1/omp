@@ -6,6 +6,8 @@
 	require_once(ROOT . "/services/CompteService.php");
 	require_once(ROOT . "/exceptions/ConstraintUniqueException.php");
 
+	// Controller => Validation des données
+
 	class ComptePostController extends AbstractController implements IController {
 
 		private CompteService $service;

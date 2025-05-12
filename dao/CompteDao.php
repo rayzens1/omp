@@ -5,6 +5,8 @@
 	require_once("../model/Compte.php");
 	require_once("../dao/RoleDao.php");
 
+	// Dao => Accès aux données
+
 	class CompteDao extends AbstractDao implements IDao {
 
 		private $roleDao;

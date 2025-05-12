@@ -21,7 +21,7 @@
 
 			$role = Role::createFromRow($row);
 
-			return $role ;
+			return $role;
 		}
     }
 ?>

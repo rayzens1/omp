@@ -3,6 +3,8 @@
 	require_once("../utils/IEntity.php");
 	require_once("../utils/AbstractEntity.php");
 
+	// Model => Objet Métier
+
 	class Compte extends AbstractEntity implements IEntity {
 		private $idCompte;
 		private $email;
