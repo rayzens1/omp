@@ -8,8 +8,10 @@
     $ROUTE = extractRoute($FORM);
     try {
         $CONTROLLER = createController($FORM,$ROUTE);
-        $CONTROLLER->execute();
-    } catch (Exception $exception){
+        $response = $CONTROLLER->execute();
+        header('Content-Type: application/json');
+        echo $response;
+    } catch (HttpStatusException $exception){
         raiseHttpStatus($exception);
     } catch (Throwable $exception){
         throw $exception;

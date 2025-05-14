@@ -1,27 +1,37 @@
 <?php
-	require_once("../utils/IDao.php");
-	require_once("../utils/AbstractDao.php");
-	require_once("../utils/BddSingleton.php");
-	require_once("../model/Role.php");
+	require_once(ROOT."/utils/dao/IDao.php");
+	require_once(ROOT."/model/Role.php");
 
-    class RoleDao extends AbstractDao implements IDao {
+    class RoleDao implements IDao {
 
-        private $Rolepdo;
+        function findAll() {
+			throw new Exception("Not implemented");
+		}
 
-        function findById(int $id) : ?Role {
-			$pdo = BddSingleton::getinstance()->getPdo();
-			$stmt = $pdo->prepare("SELECT * FROM Role WHERE id_role = ?");
-			$stmt->bindParam(1, $id);
-			$stmt->setFetchMode(PDO::FETCH_OBJ);
-			$stmt->execute();
-			$row = $stmt->fetch();
-			if ( ! $row ) {
-				return NULL;
-			}
-
-			$role = Role::createFromRow($row);
-
+		function findById(int $id) : IEntity {
+			$role = new Role();
+			$role->setIdRole($id);
+			$role->setLabel("Admin");
 			return $role;
+		}
+
+		function getDao() : IDao {
+			return $this;
+			throw new Exception("Not implemented");
+		}
+
+		function insert(IEntity $entity) : int {
+			$entity->setIdRole(4);
+			return $entity->getIdRole();
+			throw new Exception("Not implemented");
+		}
+
+		function delete(int $id) {
+			throw new Exception("Not implemented");
+		}
+
+		function update(IEntity $entity) {
+			throw new Exception("Not implemented");
 		}
     }
 ?>

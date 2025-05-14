@@ -1,25 +1,39 @@
 <?php
 
-	require_once("../utils/IService.php");
-	require_once("../utils/AbstractService.php");
-	require_once("../utils/IDao.php");
-	require_once("../dao/RoleDao.php");
-	require_once("../model/Role.php");
+	require_once(ROOT . "/utils/service/IService.php");
+	require_once(ROOT . "/utils/dao/IDao.php");
+	require_once(ROOT . "/dao/RoleDao.php");
 
-	class RoleService extends AbstractService implements IService {
+	class RoleService implements IService {
 		private RoleDao $dao;
 
 		function __construct() {
 			$this->dao = new RoleDao();
 		}
 
-		function getDao() : IDao { // définie dans la classe abstrataire
+		function getDao() : IDao {
 			return $this->dao;
 		}
 
-		function findById(int $id) : ?IEntity {
+		function findAll() { 
+			return $this->getDao()->findAll();
+		}
+		
+		function findById(int $id) : IEntity {
             return $this->getDao()->findById($id);
-		}		
+		}
+
+		function insert(IEntity $entity) : int {
+			return $this->getDao()->insert($entity);
+		}
+
+		function delete(int $id) {
+			$this->getDao()->delete($id);
+		}
+
+		function update(IEntity $entity) {
+			$this->getDao()->update($entity);
+		}
 	}
 
 ?>

@@ -1,7 +1,7 @@
 <?php 
 
 require_once(ROOT .  "/exceptions/HttpStatusException.php");
-require_once(ROOT .  "/utils/IController.php");
+require_once(ROOT .  "/utils/controller/IController.php");
 
 
  function serverBootstrap(){
@@ -89,7 +89,7 @@ function extractRoute(array $FORM):string {
         return ucfirst($method);
     }
 
-    function isNaturalNumber(str $number):bool{
+    function isNaturalNumber(string $number):bool{
         return ctype_digit($number);
     }
 

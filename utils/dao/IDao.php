@@ -1,10 +1,12 @@
 <?php
 
+	require_once(ROOT . "/utils/entity/IEntity.php");
+
 	interface IDao {
 
 		function findAll();
 
-		function findById(int $id) : ?IEntity;
+		function findById(int $id) : IEntity;
 
 		function getDao() : IDao;
 

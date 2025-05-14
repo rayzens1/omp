@@ -1,6 +1,6 @@
 <?php
 
-	require_once("../utils/IEntity.php");
+	require_once(ROOT . "/utils/entity/IEntity.php");
 
 	abstract class AbstractEntity implements IEntity {
 
