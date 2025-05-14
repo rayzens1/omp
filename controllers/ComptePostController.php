@@ -61,6 +61,7 @@
 			}
 		}
 
+				// function execute()
                 function processRequest() {
 			$compte = Compte::create($this->email, $this->pseudo, $this->password);
 			try {

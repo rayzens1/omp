@@ -1,51 +1,41 @@
 <?php
 
-	require_once(ROOT . "/utils/IController.php");
-	require_once(ROOT . "/utils/AbstractController.php");
-	require_once(ROOT . "/utils/functions.php");
-	require_once(ROOT . "/services/RoleService.php");
+require_once(ROOT .  "/utils/functions.php");
+require_once(ROOT .  "/exceptions/HttpStatusException.php");
+require_once(ROOT .  "/utils/IController.php");
 
-	class RoleGetController extends AbstractController implements IController {
+class RoleGetController implements IController {
 
-		private RoleService $service;
-		private int $id;
+    protected array $form;
+    protected int $id;
+    
+    public function __construct(array $form ){
+        $this->form = $form;
+    }
 
-		public function __construct($form, $controllerName) {
-			// Appel du constructeur de la classe mère AbstractController
-			parent::__construct($form, $controllerName);
-			$this->service = new RoleService();
-		}
-
-		function checkForm() {
-			if (! isset($this->form['id']) ) { // l'id doit etre présent
-				error_log("CYBERSEC Receive bad request");
-				_400_Bad_Request();
-			}
-			// OK
-		}
-
-                function checkCybersec() {
-			if ( ! ctype_digit( $this->form['id'] ) ) {
-				error_log("CYBERSEC Receive bad request");
-				_400_Bad_Request();
-			}
-			$this->id = intval( $this->form['id'] );
-		}
-
-                function checkRights() {
-			error_log($this->controllerName . "->" . __FUNCTION__ . 
-				"TODO - la fonction isLogged est bouchonnée, terminer le job");
-			// TODO décommenter pour rendre ça opérationnel
-//			if ( ! isLogged() ) {
-//				_401_Unauthorized();
-//			}
-			// TODO Est ce que j'ai besoin de controller les droits rédacteur / Modo / Admin
-		}
-
-                function processRequest() {
-			$this->response = $this->service->findById($this->id);
-		}
-
+	function execute() {
+		$this->checkForm();		// Vérifier les données de formulaires
+		$this->checkCybersec();		// Vérifier la cybersécurité
+		$this->checkRights();		// Controller les droits d'accès
+		$this->processRequest();	// traiter la requete
+		$this->processResponse();	// fournir la réponse
 	}
 
-?>
+	protected function checkForm() { 
+        if ( !isset($this->form['id']) ) {
+            throw new HttpStatusException(400, "param id not exists");
+        }
+     }
+
+	protected function checkCybersec() { 
+        if(!isNaturalNumber($this->form['id'])) {
+            throw new HttpStatusException(400, "param id not a number");
+        }
+        $this->id = intVal($this->form['id']);
+    }
+
+	protected function checkRights() {error_log( __LINE__ . " ". __FUNCTION__); }
+	protected function processRequest() {error_log( __LINE__ . " ". __FUNCTION__); }
+    protected function processResponse() {error_log( __LINE__ . " ". __FUNCTION__); }
+
+}

@@ -1,97 +1,101 @@
-<?php
+<?php 
 
-	define("MYSQL_DATE_FORMAT", "Y-m-d h:m:s");
+require_once(ROOT .  "/exceptions/HttpStatusException.php");
+require_once(ROOT .  "/utils/IController.php");
 
-	function headerAndDie($header) {
-		header($header);
-		die();
-	}
 
-	function headerCustom(int $code, string $label) {
-		headerAndDie("HTTP/1.1 " . $code . " " . $label);
-	}
+ function serverBootstrap(){
+    error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING & ~E_STRICT & ~E_NOTICE & ~E_PARSE);
+    ini_set('display_errors', 'off');
+ }
 
-	function _400_Bad_Request($msg = "") {
-		headerAndDie("HTTP/1.1 400 Bad Request " . $msg);
-	}
+function headerAndDie($header){
+    header($header);
+    die();
+}
 
-	function _401_Unauthorized() {
-		headerAndDie("HTTP/1.1 401 Unauthorized");
-	}
 
-	function _404_Not_Found($msg = "") {
-		headerAndDie("HTTP/1.1 404 Not Found " . $msg);
-	}
+    function _400_Bad_Request($msg = ""){
+        headerAndDie("HTTP/1.1 400 bad request: ". $msg);
+    }
 
-	function _405_Method_Not_Allowed() {
+        function _404_Not_Found($msg = ""){
+        headerAndDie("HTTP/1.1 404 Not Found: ". $msg);
+    }
+
+    	function _405_Method_Not_Allowed() {
 		headerAndDie("HTTP/1.1 405 Method Not Allowed");
 	}
 
-	function _500_Internal_Server_Error($msg) {
-		headerAndDie("HTTP/1.1 5OO Internal Server Error " . $msg);
-	}
+/* Methodes */
 
-	function extractForm() {
-		switch ($_SERVER['REQUEST_METHOD']) {
-		case 'GET' : return $_GET;
-		case 'POST' : return $_POST;
-		case 'PUT' : // Non géré en php, il va falloir extraire depuis le formulaire brut
-			$raw = file_get_contents('php://input'); 	// Le formulaire brut
-			$form = [];					// mon futur tableau associatif
-			parse_str($raw, $form);	// Function interne de transfert du raw vers mon $form
-			return $form;
-		case 'DELETE' : return $_GET;
-		default : _405_Method_Not_Allowed();
-		}
-	}
+function raiseHttpStatus(HttpStatusException $exception):void{
+    switch($exception->getCode()) {
+        case 404 :_404_Not_Found($exception->getMessage());
+            break;
+        case 400 :
+            _400_Bad_Request($exception->getMessage());
+            break;
+        default : throw new Exception ("Http Status Exception not manage" );
+    }
+}
 
-	/**
-	 * Cette fonction va extraire le paramètre "route" du formulaire
-	 * puis le retourner, SI il n'est pas présent, le serveur retournera
-	 * une erreur 400 Bad Request car on considère que l'on ne comprend
-	 * pas la demande du client.
-	 */
-	function extractRoute($FORM) {
+function extractForm(): array {
+    switch ($_SERVER['REQUEST_METHOD']){
+        case 'GET':return $_GET;
+        case 'POST':return $_POST;
+        case 'DELETE':return $_GET;
+        case 'PUT':
+            $raw = file_get_contents('php://input');
+            $form = [];
+            parse_str($raw,$form);
+            return $form;
+        default: _405_method_Not_Allowed() ;
+        throw new Exception("Unsupported HTTP method: " . $_SERVER['REQUEST_METHOD']);
+        
+
+    }
+}
+
+
+function extractRoute(array $FORM):string {
 		if ( ! isset( $FORM['route'] ) ) {
-			// Fall back au cas où on arrive sans aucun paramètre
-			// On va à l'accueil, dans le cas des Web Services
-			// Le développeur devrait tout le temps spécifier une route
-			return "Accueil";
+			 _400_Bad_Request("No parameter: route");
+             return "";
 		}
-		// On veut sécuriser la syntaxe de la route
 		$ROUTE = $FORM['route'];
 		if ( preg_match("/^[A-Za-z]{1,64}$/", $ROUTE) ) {
 			return $ROUTE;
 		}
-		_400_Bad_Request("Wrong route syntax '" . $ROUTE . "'");
-	}
+		_400_Bad_Request("Wrong route syntax :route");
+        return "";
+	} 
+    function createController($FORM,$ROUTE):IController{
+        $METHOD = createMethod();
+        $CLASS_NAME = $ROUTE . $METHOD . "Controller";
+        $FILE = ROOT. "/controllers/". $CLASS_NAME . ".php";
+        //if the file doesn't existe we throw an exception.
+        if(!file_exists($FILE)) {
+            throw new HttpStatusException(404, "Unknown Controller :" . $ROUTE . $METHOD);
+        }           
+        require($FILE);
+        $CONTROLLER = new $CLASS_NAME($FORM);
+        return $CONTROLLER;
+            
+    }
 
-	function createController($FORM, $ROUTE) {
-		// Je récupère la méthode, par exemple GET, je veux Get
-		$METHOD = strtolower( $_SERVER['REQUEST_METHOD'] ); // Tout en minuscule
-		$METHOD = ucfirst($METHOD); // Première lettre en Majuscule
-		// Je construis le nom de mon controlleur, je vais le réutiliser ailleurs
-		$CONTROLLER_NAME = $ROUTE . $METHOD . "Controller";
-		$FILE = ROOT . "/controllers/" . $CONTROLLER_NAME . ".php";
-		if ( ! file_exists($FILE) ) {
-			_404_Not_Found("Unknown Controller " . $ROUTE . $METHOD);
-		}
-		// Mon fichier PHP existe, je peux le require, puis charger la classe
-		require($FILE);
-		$controller = new $CONTROLLER_NAME($FORM, $CONTROLLER_NAME);
-		return $controller;
-	}
+    function createMethod(){
+        $method = strtolower($_SERVER['REQUEST_METHOD']);
+        return ucfirst($method);
+    }
 
-	function isEmail($email) {
-		return true;
-	}
+    function isNaturalNumber(str $number):bool{
+        return ctype_digit($number);
+    }
 
-	function checkPassword($password) {
-		return true;
-	}
 
-	function hashPassword(string $str) {
-		return password_hash($str, PASSWORD_BCRYPT);
-	}
+    //Server functions
+
+
 
 ?>
