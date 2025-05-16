@@ -5,24 +5,110 @@
 
 	class Compte extends AbstractEntity implements IEntity {
 		private $idCompte;
-		private $label;
+		private $login;
+		private $password;
+		private $pseudo;
+		private $dateCreation;
+		private $dateModification;
+		private $estSupprime;
+		private $estSignale;
+		private $estBanni;
+		private $enAttenteDeModeration;
+		private $fk_role;
+
 		function __contruct() { /* RAS */ }
+
 		function getIdCompte() : int {
 			return $this->idCompte;
 		}
 		function setIdCompte(int $id) {
 			$this->idCompte = $id;
 		}
-		function getLabel() : string {
-			return $this->label;
+		function setLogin(string $login) {
+			$this->login = $login;
 		}
-		function setLabel(string $l) {
-			$this->label = $l;
+		function getLogin() : string {
+			return $this->login;
 		}
+
+		function setPassword(string $password) {
+			$this->password = $password;
+		}
+
+		function getPassword() : string {
+			return $this->password;
+		}
+
+		function setPseudo(string $pseudo) {
+			$this->pseudo = $pseudo;
+		}
+		function getPseudo() : string {
+			return $this->pseudo;
+		}
+
+		function setDateCreation(string $dateCreation) {
+			$this->dateCreation = $dateCreation;
+		}
+		function getDateCreation() : string {
+			return $this->dateCreation;
+		}
+
+		function setDateModification(string $dateModification) {
+			$this->dateModification = $dateModification;
+		}
+		function getDateModification() : string {
+			return $this->dateModification;
+		}
+
+		function setEstSupprime(bool $estSupprime) {
+			$this->estSupprime = $estSupprime;
+		}
+		function getEstSupprime() : bool {
+			return $this->estSupprime;
+		}
+
+		function setEstSignale(bool $estSignale) {
+			$this->estSignale = $estSignale;
+		}
+		function getEstSignale() : bool {
+			return $this->estSignale;
+		}
+
+		function setEstBanni(bool $estBanni) {
+			$this->estBanni = $estBanni;
+		}
+		function getEstBanni() : bool {
+			return $this->estBanni;
+		}
+
+		function setEnAttenteDeModeration(bool $enAttenteDeModeration) {
+			$this->enAttenteDeModeration = $enAttenteDeModeration;
+		}
+		function getEnAttenteDeModeration() : bool {
+			return $this->enAttenteDeModeration;
+		}
+
+		function setFkRole(int $fk_role) {
+			$this->fk_role = $fk_role;
+		}
+		function getFkRole() : int {
+			return $this->fk_role;
+		}
+
 		public static function createFromRow($row) {
 			$compte = new Compte();
 			$compte->setIdCompte( intval($row->id_compte) );
-			$compte->setLabel( $row->label );
+			$compte->setLogin( $row->login );
+			$compte->setPassword( $row->password );
+			$compte->setPseudo( $row->pseudo );
+			$compte->setDateCreation( $row->dateCreation );
+			$compte->setDateModification( $row->dateModification );
+			$compte->setEstSupprime( $row->estSupprime );
+			$compte->setEstSignale( $row->estSignale );
+			$compte->setEstBanni( $row->estBanni );
+			$compte->setEnAttenteDeModeration( $row->enAttenteDeModeration );
+			$compte->setFkRole( intval($row->fk_role) );
+			
 			return $compte;
 		}
 	}

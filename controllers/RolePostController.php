@@ -55,6 +55,6 @@ class RolePostController implements IController {
         $output = json_encode($this->response);
         $cleanOutput = ltrim($output); // Suppression des espaces et cie avant et après
         return $cleanOutput;
-     }
+    }
 
 }

@@ -1,18 +1,21 @@
 <?php 
 
-require_once(ROOT .  "/exceptions/HttpStatusException.php");
-require_once(ROOT .  "/utils/controller/IController.php");
+    require_once(ROOT .  "/exceptions/HttpStatusException.php");
+    require_once(ROOT .  "/utils/controller/IController.php");
+
+    define("START_TIME", "startTime" );
+    define("COMPTE_ID", "compteId" );
 
 
- function serverBootstrap(){
-    error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING & ~E_STRICT & ~E_NOTICE & ~E_PARSE);
-    ini_set('display_errors', 'off');
- }
+    function serverBootstrap(){
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING & ~E_STRICT & ~E_NOTICE & ~E_PARSE);
+        ini_set('display_errors', 'off');
+    }
 
-function headerAndDie($header){
-    header($header);
-    die();
-}
+    function headerAndDie($header){
+        header($header);
+        die();
+    }
 
 
     function _400_Bad_Request($msg = ""){
@@ -70,7 +73,7 @@ function extractRoute(array $FORM):string {
 		_400_Bad_Request("Wrong route syntax :route");
         return "";
 	} 
-    function createController($FORM,$ROUTE):IController{
+    function createController($FORM,$ROUTE):IController {
         $METHOD = createMethod();
         $CLASS_NAME = $ROUTE . $METHOD . "Controller";
         $FILE = ROOT. "/controllers/". $CLASS_NAME . ".php";
@@ -84,18 +87,49 @@ function extractRoute(array $FORM):string {
             
     }
 
-    function createMethod(){
+    function createMethod() {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         return ucfirst($method);
     }
 
-    function isNaturalNumber(string $number):bool{
+    function isNaturalNumber(string $number):bool {
         return ctype_digit($number);
     }
 
+    function manageSession() {
+        session_start();
+        initSession();
 
-    //Server functions
+        if( $_SESSION[START_TIME] + getMaxTime() < time()) {
+            reinitSession();
+        }
+    }
 
+    function initSession() {
+        if(!isset($_SESSION[START_TIME])) {
+            $_SESSION[START_TIME] = time();
+        } else if (isLogged()) {
+            $_SESSION[START_TIME] = time();
+        }
+    }
 
+    function reinitSession() {
+        session_destroy();
+        session_start();
+        initSession();
+    }
+
+    
+    function getMaxTime():int {
+        return 60 * 15; // 15 minutes
+    }
+    
+    function isLogged():bool {
+        return isset($_SESSION[COMPTE_ID]);
+    }
+
+    function getCompteIdFromSession() : ?int {
+        return isLogged() ? $_SESSION[COMPTE_ID] : null;
+    }
 
 ?>

@@ -1,22 +1,25 @@
 <?php
 	require_once(ROOT."/utils/dao/IDao.php");
 	require_once(ROOT."/model/Role.php");
+	require_once(ROOT."/exceptions/HttpStatusException.php");
+	require_once(ROOT."/utils/BddSingleton.php");
+	require_once(ROOT."/utils/dao/AbstractDao.php");
 
-    class RoleDao implements IDao {
+    class RoleDao extends AbstractDao implements IDao {
+
+		function getTableName() : string {
+			return "Role";
+		}
+
+		function getPrimaryKey() : string {
+			return "id_role";
+		}
+
+		function createEntityFromRow($row) : IEntity {
+			return Role::createFromRow($row);
+		}
 
         function findAll() {
-			throw new Exception("Not implemented");
-		}
-
-		function findById(int $id) : IEntity {
-			$role = new Role();
-			$role->setIdRole($id);
-			$role->setLabel("Admin");
-			return $role;
-		}
-
-		function getDao() : IDao {
-			return $this;
 			throw new Exception("Not implemented");
 		}
 
@@ -33,5 +36,6 @@
 		function update(IEntity $entity) {
 			throw new Exception("Not implemented");
 		}
+		
     }
 ?>

@@ -1,10 +1,10 @@
 <?php
 
 require_once(ROOT .  "/utils/controller/IController.php");
-require_once(ROOT .  "/utils/controller/AbstractController.php");
+require_once(ROOT .  "/utils/controller/AbstractGetController.php");
 require_once(ROOT . "/services/RoleService.php");
 
-class RoleGetController extends AbstractController implements IController {
+class RoleGetController extends AbstractGetController implements IController {
 
     protected RoleService $service;
     

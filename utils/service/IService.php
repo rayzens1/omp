@@ -4,7 +4,7 @@
     require_once(ROOT . "/utils/entity/IEntity.php");
 
     interface IService {
-        function findAll();
+        function findAll() : array;
         function findById(int $id);
         function getDao(): IDao;
         function insert(IEntity $entity) : int;

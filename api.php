@@ -4,6 +4,7 @@
     require_once (ROOT."/utils/functions.php");
     require_once (ROOT."/exceptions/HttpStatusException.php");
     serverBootstrap();
+    manageSession();
     $FORM = extractForm();
     $ROUTE = extractRoute($FORM);
     try {
