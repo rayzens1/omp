@@ -22,13 +22,17 @@
         headerAndDie("HTTP/1.1 400 bad request: ". $msg);
     }
 
-        function _404_Not_Found($msg = ""){
+    function _404_Not_Found($msg = ""){
         headerAndDie("HTTP/1.1 404 Not Found: ". $msg);
     }
 
-    	function _405_Method_Not_Allowed() {
+    function _405_Method_Not_Allowed($msg = "") {
 		headerAndDie("HTTP/1.1 405 Method Not Allowed");
 	}
+
+    function _499_Authentication_Error($msg = "") {
+        headerAndDie("HTTP/1.1 499 Authentication Error : " . $msg);
+    }
 
 /* Methodes */
 
@@ -38,6 +42,12 @@ function raiseHttpStatus(HttpStatusException $exception):void{
             break;
         case 400 :
             _400_Bad_Request($exception->getMessage());
+            break;
+        case 405 :
+            _405_Method_Not_Allowed($exception->getMessage());
+            break;
+        case 499:
+            _499_Authentication_Error($exception->getMessage());
             break;
         default : throw new Exception ("Http Status Exception not manage" );
     }
@@ -61,7 +71,7 @@ function extractForm(): array {
 }
 
 
-function extractRoute(array $FORM):string {
+    function extractRoute(array $FORM):string {
 		if ( ! isset( $FORM['route'] ) ) {
 			 _400_Bad_Request("No parameter: route");
              return "";
@@ -94,6 +104,14 @@ function extractRoute(array $FORM):string {
 
     function isNaturalNumber(string $number):bool {
         return ctype_digit($number);
+    }
+
+    function isSanitizedString(string $str):bool {
+        return true;
+    }
+
+    function sanitizeString(string $str):string {
+        return $str;
     }
 
     function manageSession() {
@@ -132,4 +150,7 @@ function extractRoute(array $FORM):string {
         return isLogged() ? $_SESSION[COMPTE_ID] : null;
     }
 
+    function login(int $id) {
+        $_SESSION[COMPTE_ID] = $id;
+    }
 ?>

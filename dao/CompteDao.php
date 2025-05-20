@@ -25,7 +25,6 @@
 
 		function getDao() : IDao {
 			return $this;
-			throw new Exception("Not implemented");
 		}
 
 		function insert(IEntity $entity) : int {
@@ -38,6 +37,34 @@
 
 		function update(IEntity $entity) {
 			throw new Exception("Not implemented");
+		}
+
+		function isValidCredential(Compte $compte) : ?int {
+			$login = $compte->getLogin();
+			$password = $compte->getPassword();
+
+			$pdo = BddSingleton::getInstance()->getPdo();
+
+			// Le login existe en table ?
+			$sql = "SELECT id_compte, password FROM Compte WHERE login = ? LIMIT 1";
+			$stmt = $pdo->prepare($sql);
+			$stmt->bindParam(1, $login, PDO::PARAM_STR);
+			$stmt->setFetchMode(PDO::FETCH_OBJ);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			if (!$row) {
+				return null;
+			}
+			$idCompte = $row->id_compte;
+			$bddhash = $row->password;
+			error_log("password : $password");
+			error_log("bddhash : $bddhash");
+			$passwordhash = password_hash($password, PASSWORD_DEFAULT);
+			if (password_verify($password, $bddhash)) {
+				return $idCompte;
+			} else {
+				return null;
+			}
 		}
     }
 

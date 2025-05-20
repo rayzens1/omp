@@ -16,6 +16,10 @@
 			return $this->dao;
 		}
 
+		function isValidCredential(Compte $compte) : ?int {
+			return $this->dao->isValidCredential($compte);
+		}
+
 	}
 
 ?>

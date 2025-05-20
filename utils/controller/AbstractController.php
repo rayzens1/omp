@@ -7,7 +7,7 @@ require_once(ROOT .  "/utils/controller/IController.php");
 abstract class AbstractController implements IController {
 
     protected array $form;
-    protected $response;
+    protected string $response;
     
     public function __construct(array $form ){
         $this->form = $form;
@@ -30,9 +30,9 @@ abstract class AbstractController implements IController {
 	protected abstract function processRequest();
 
     protected function processResponse() { 
-        if ( $this->response == null ) {
+        if ( is_null($this->response)) {
             error_log("Unable to find something"); // TODO Faire une méthode abstraite
-            throw new HttpStatusException(404, "Role not found");
+            throw new HttpStatusException(404, "response not found");
         }
         $output = json_encode($this->response);
         $cleanOutput = ltrim($output); // Suppression des espaces et cie avant et après

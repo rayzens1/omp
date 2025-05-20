@@ -18,3 +18,5 @@ class CompteGetController extends AbstractGetController implements IController {
     }
 
 }
+
+?>
