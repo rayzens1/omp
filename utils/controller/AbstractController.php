@@ -7,7 +7,7 @@ require_once(ROOT .  "/utils/controller/IController.php");
 abstract class AbstractController implements IController {
 
     protected array $form;
-    protected string $response;
+    protected $response;
     
     public function __construct(array $form ){
         $this->form = $form;

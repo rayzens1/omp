@@ -112,6 +112,15 @@
 			return $compte;
 		}
 
+		public static function createFromForm($form) {
+			$compte = new Compte();
+			$compte->setLogin( $form['login'] );
+			$compte->setPassword( $form['password'] );
+			$compte->setPseudo( $form['pseudo'] );
+			
+			return $compte;
+		}
+
 		public static function createForCredential(string $login, string $password) {
             $compte = new Compte();
             $compte->setLogin( $login );

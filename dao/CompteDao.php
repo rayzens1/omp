@@ -27,8 +27,40 @@
 			return $this;
 		}
 
-		function insert(IEntity $entity) : int {
-			throw new Exception("Not implemented");
+		function insert(IEntity $compte) : int {
+			$login = $compte->getLogin();
+			$password = $compte->getPassword();
+			$pseudo = $compte->getPseudo();
+			$dateCreation = $compte->getDateCreation()->format("Y-m-d H:i:s");
+			$dateModification = $compte->getDateModification()->format("Y-m-d H:i:s");
+			$estSupprime = $compte->getEstSupprime();
+			$estSignale = $compte->getEstSignale();
+			$estBanni = $compte->getEstBanni();
+			$enAttenteDeModeration = $compte->getEnAttenteDeModeration();
+			$fk_role = $compte->getFkRole();
+			$hash = password_hash($password, PASSWORD_DEFAULT);
+
+			$pdo = BddSingleton::getInstance()->getPdo();
+
+			$sql = "INSERT INTO Compte (login, password, pseudo, dateCreation, dateModification, estSupprime, estSignale, estBanni, enAttenteDeModeration, fk_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$stmt = $pdo->prepare($sql);
+			$stmt->bindParam(1, $login, PDO::PARAM_STR);
+			$stmt->bindParam(2, $hash, PDO::PARAM_STR);
+			$stmt->bindParam(3, $pseudo, PDO::PARAM_STR);
+			$stmt->bindParam(4, $dateCreation, PDO::PARAM_STR);
+			$stmt->bindParam(5, $dateModification, PDO::PARAM_STR);
+			$stmt->bindParam(6, $estSupprime, PDO::PARAM_INT);
+			$stmt->bindParam(7, $estSignale, PDO::PARAM_INT);
+			$stmt->bindParam(8, $estBanni, PDO::PARAM_INT);
+			$stmt->bindParam(9, $enAttenteDeModeration, PDO::PARAM_INT);
+			$stmt->bindParam(10, $fk_role, PDO::PARAM_INT);
+
+			$stmt->execute();
+			$id = $pdo->lastInsertId();
+			if ($id == 0) {
+				throw new HttpStatusException(500, "Impossible d'ajouter le compte");
+			}
+			return $id;
 		}
 
 		function delete(int $id) {

@@ -34,6 +34,10 @@
         headerAndDie("HTTP/1.1 499 Authentication Error : " . $msg);
     }
 
+    function _500_Internal_Server_Error($msg = "") {
+        headerAndDie("HTTP/1.1 500 Internal Server Error : ". $msg);
+    }
+
 /* Methodes */
 
 function raiseHttpStatus(HttpStatusException $exception):void{
@@ -48,6 +52,9 @@ function raiseHttpStatus(HttpStatusException $exception):void{
             break;
         case 499:
             _499_Authentication_Error($exception->getMessage());
+            break;
+        case 500:
+            _500_Internal_Server_Error($exception->getMessage());
             break;
         default : throw new Exception ("Http Status Exception not manage" );
     }

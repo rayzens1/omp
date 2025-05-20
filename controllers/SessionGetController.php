@@ -2,6 +2,7 @@
 
     require_once( ROOT . "/utils/controller/IController.php");
     require_once( ROOT . "/utils/functions.php");
+    require_once( ROOT . "/services/CompteService.php");
 
     class SessionGetController implements IController {
 
@@ -14,6 +15,13 @@
             $sessionState->startTime = $_SESSION[START_TIME];
             $sessionState->endTime = $_SESSION[START_TIME] + getMaxTime();
             $sessionState->isLogged = isLogged();
+            if(isLogged()) {
+                $sessionInfo = new stdClass();
+                $compteId = $_SESSION['compteId'];
+                $service = new CompteService();
+                $sessionInfo->login = $service->findById($compteId)->getLogin();
+                $sessionState->userInfo = $sessionInfo;
+            }
             return json_encode($sessionState);
         }
 

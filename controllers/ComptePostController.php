@@ -7,11 +7,13 @@ require_once(ROOT . "/model/Compte.php");
 require_once(ROOT . "/exceptions/HttpStatusException.php");
 require_once(ROOT . "/utils/functions.php");
 
-class LoginPostController extends AbstractController implements IController {
+class ComptePostController extends AbstractController implements IController {
 
     protected CompteService $service;
     private string $login;
     private string $password;
+    private string $passwordc;
+    private string $pseudo;
     
     public function __construct(array $form ){
         parent::__construct($form);
@@ -25,6 +27,12 @@ class LoginPostController extends AbstractController implements IController {
         if ( !isset($this->form['password']) ) {
             throw new HttpStatusException(400, "param password not exists");
         }
+        if ( !isset($this->form['passwordc']) ) {
+            throw new HttpStatusException(400, "param passwordc not exists");
+        }
+        if ( !isset($this->form['pseudo']) ) {
+            throw new HttpStatusException(400, "param pseudo not exists");
+        }
     }
 
 	protected function checkCybersec() { 
@@ -33,22 +41,30 @@ class LoginPostController extends AbstractController implements IController {
         }
         $this->login = sanitizeString($this->form['login']);
         if(!isSanitizedString($this->form['password'])) {
-            throw new HttpStatusException(400, "param login not a valid string");
+            throw new HttpStatusException(400, "param password not a valid string");
         }
         $this->password = sanitizeString($this->form['password']);
+        if(!isSanitizedString($this->form['passwordc'])) {
+            throw new HttpStatusException(400, "param passwordc not a valid string");
+        }
+        $this->passwordc = sanitizeString($this->form['passwordc']);
+        if(!isSanitizedString($this->form['pseudo'])) {
+            throw new HttpStatusException(400, "param pseudo not a valid string");
+        }
+        $this->pseudo = sanitizeString($this->form['pseudo']);
     }
 
 	protected function processRequest() {
         if (isLogged()) {
             throw new HttpStatusException(499, "Already logged");
         }
-        $compte = Compte::createForCredential($this->login, $this->password);
-        $id = $this->service->isValidCredential($compte);
-        if ( is_null($id) ) {
-            throw new HttpStatusException(499, "Invalid Credential");
+        if($this->password != $this->passwordc) {
+            throw new HttpStatusException(400, "Password not same");
         }
-        login($id);
-        $this->response = "";
+
+        $compte = Compte::createFromForm($this->form);
+
+        $this->response = $this->service->insert($compte);
     }
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+	require_once(ROOT . "/utils/functions.php");
+
 	// Le principe de ce design pattern est de s'assurer que je n'aurai qu'une seule
 	// instance de la classe BddSingleton dans toute mon application.
 	// Pour faire ça, on va rendre le constructeur privé, il ne sera utilisable
@@ -23,7 +25,8 @@
 				$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			} catch (PDOException $e) {
 				error_log($e);
-				_500_Internal_Server_Error("DB Connection error " . $e->getMessage());
+				// _500_Internal_Server_Error("DB Connection error " . $e->getMessage());
+				throw new HttpStatusException(500,"DB Connection error " . $e->getMessage());
 			}
 		}
 
