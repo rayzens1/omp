@@ -1,4 +1,5 @@
 import { myFetch } from './fetch.js';
+import { afficherEasteregg } from './easteregg.js';
 
 // Avec les modules on doit attacher la fonction accueil à la fenêtre du DOM
 window.accueil = accueil;
@@ -46,6 +47,7 @@ const afficheLoginZone = function(sessionInfo) {
         loginArea.appendChild(document.createElement('br')); // On ajoute un saut de ligne
         // LOGIN
         afficheRegister();
+        afficherEasteregg();
     }
 }
 
