@@ -15,6 +15,7 @@
 		private $estBanni;
 		private $enAttenteDeModeration;
 		private $fk_role;
+		private $role;
 
 		function __contruct() { /* RAS */ }
 
@@ -95,6 +96,14 @@
 			return $this->fk_role;
 		}
 
+		function setRole(Role $role) {
+			$this->role = $role;
+		}
+
+		function getRole() : Role {
+			return $this->role;
+		}
+
 		public static function createFromRow($row) {
 			$compte = new Compte();
 			$compte->setIdCompte( intval($row->id_compte) );
@@ -107,7 +116,8 @@
 			$compte->setEstSignale( $row->estSignale );
 			$compte->setEstBanni( $row->estBanni );
 			$compte->setEnAttenteDeModeration( $row->enAttenteDeModeration );
-			$compte->setFkRole( intval($row->fk_role) );
+			// $compte->setFkRole( intval($row->fk_role) );
+			$compte->setRole( $row->role );
 			
 			return $compte;
 		}
@@ -125,6 +135,13 @@
             $compte = new Compte();
             $compte->setLogin( $login );
             $compte->setPassword( $password );
+            return $compte;
+        }
+
+		public static function createForRegister(string $login, string $pseudo) {
+            $compte = new Compte();
+            $compte->setLogin( $login );
+			$compte->setPseudo( $pseudo );
             return $compte;
         }
 	}

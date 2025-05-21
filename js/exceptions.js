@@ -4,3 +4,10 @@ export class AuthentificationError extends Error {
         super(message);
     }
 }
+
+
+export class RegisterError extends Error {
+    constructor(message) {
+        super(message);
+    }
+}

@@ -28,16 +28,18 @@
 		}
 
 		function insert(IEntity $compte) : int {
+			/** @var Compte $compte */
+			
 			$login = $compte->getLogin();
 			$password = $compte->getPassword();
 			$pseudo = $compte->getPseudo();
-			$dateCreation = $compte->getDateCreation()->format("Y-m-d H:i:s");
-			$dateModification = $compte->getDateModification()->format("Y-m-d H:i:s");
+			$dateCreation = $compte->getDateCreation();
+			$dateModification = $compte->getDateModification();
 			$estSupprime = $compte->getEstSupprime();
 			$estSignale = $compte->getEstSignale();
 			$estBanni = $compte->getEstBanni();
 			$enAttenteDeModeration = $compte->getEnAttenteDeModeration();
-			$fk_role = $compte->getFkRole();
+			$fk_role = $compte->getRole()->getIdRole(); // 1 = ROLE_USER
 			$hash = password_hash($password, PASSWORD_DEFAULT);
 
 			$pdo = BddSingleton::getInstance()->getPdo();
@@ -55,7 +57,20 @@
 			$stmt->bindParam(9, $enAttenteDeModeration, PDO::PARAM_INT);
 			$stmt->bindParam(10, $fk_role, PDO::PARAM_INT);
 
-			$stmt->execute();
+			try {
+				$stmt->execute();
+			} catch (PDOException $ex) {
+				if(str_starts_with($ex->getMessage(), "SQLSTATE[23000]")) {
+					$msg = explode(": ", $ex->getMessage())[2];
+					if( str_starts_with($msg, "1062")) {
+						$msg = explode(" ", $msg)[6];
+						throw new HttpStatusException(499, $msg." - already exists");
+					}
+				} else {
+					throw new HttpStatusException(500, "Erreur SQL : ".$ex->getMessage());
+				}
+			}
+		
 			$id = $pdo->lastInsertId();
 			if ($id == 0) {
 				throw new HttpStatusException(500, "Impossible d'ajouter le compte");
@@ -97,6 +112,43 @@
 			} else {
 				return null;
 			}
+		}
+
+		function isValidLogin(Compte $compte) : ?bool {
+			$login = $compte->getLogin();
+
+			$pdo = BddSingleton::getInstance()->getPdo();
+
+			// Le login existe en table ?
+			$sql = "SELECT login FROM Compte WHERE login = ? LIMIT 1";
+			$stmt = $pdo->prepare($sql);
+			$stmt->bindParam(1, $login, PDO::PARAM_STR);
+			$stmt->setFetchMode(PDO::FETCH_OBJ);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			if (!$row) {
+				// Le login n'existe pas
+				return true;
+			}
+			return false;
+		}
+
+		function isValidPseudo(Compte $compte) : ?bool {
+			$pseudo = $compte->getPseudo();
+
+			$pdo = BddSingleton::getInstance()->getPdo();
+
+			// Le pseudo existe en table ?
+			$sql = "SELECT pseudo FROM Compte WHERE pseudo = ? LIMIT 1";
+			$stmt = $pdo->prepare($sql);
+			$stmt->bindParam(1, $pseudo, PDO::PARAM_STR);
+			$stmt->setFetchMode(PDO::FETCH_OBJ);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			if (!$row) {
+				return true;
+			}
+			return false;
 		}
     }
 

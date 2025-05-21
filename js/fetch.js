@@ -1,4 +1,4 @@
-import { AuthentificationError } from './exceptions.js';
+import { AuthentificationError, RegisterError } from './exceptions.js';
 
 const defaultResponseCallback = function(response) {
 
@@ -19,6 +19,8 @@ const defaultResponseCallback = function(response) {
         switch (response.status) {
             case 499:
                 throw new AuthentificationError(statusText);
+            case 400:
+                throw new RegisterError(statusText);
             default:
                 throw new Error('Network response was not ok ' + response.statusText);
         }

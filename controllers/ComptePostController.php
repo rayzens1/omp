@@ -48,10 +48,24 @@ class ComptePostController extends AbstractController implements IController {
             throw new HttpStatusException(400, "param passwordc not a valid string");
         }
         $this->passwordc = sanitizeString($this->form['passwordc']);
+        if($this->password != $this->passwordc) {
+            throw new HttpStatusException(400, "Password not same");
+        }
+        if(!isPassword($this->password)) {
+            throw new HttpStatusException(400, "Password not strong enough");
+        }
         if(!isSanitizedString($this->form['pseudo'])) {
             throw new HttpStatusException(400, "param pseudo not a valid string");
         }
         $this->pseudo = sanitizeString($this->form['pseudo']);
+
+        // $compte = Compte::createForRegister($this->login, $this->pseudo);
+        // if(!$this->service->isValidLogin($compte)) {
+        //     throw new HttpStatusException(400, 'Login already exists');
+        // }
+        // if(!$this->service->isValidPseudo($compte)) {
+        //     throw new HttpStatusException(400, 'Pseudo already exists');
+        // }
     }
 
 	protected function processRequest() {

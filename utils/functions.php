@@ -160,4 +160,10 @@ function extractForm(): array {
     function login(int $id) {
         $_SESSION[COMPTE_ID] = $id;
     }
+
+    // TODO : check if password is strong enough
+    function isPassword($password) {
+        trigger_error('TODO : check if password is strong enough : in utils/functions.php', E_USER_WARNING);
+        return true;
+    }
 ?>

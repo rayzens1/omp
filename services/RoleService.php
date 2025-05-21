@@ -15,6 +15,14 @@
 		function getDao() : IDao {
 			return $this->dao;
 		}
+
+		function getRole(int $roleId) : Role {
+			$role = $this->dao->findById($roleId);
+			if ($role == null) {
+				throw new HttpStatusException(404, "Role not found");
+			}
+			return $role;
+		}
 	}
 
 ?>
