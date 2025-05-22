@@ -30,9 +30,12 @@ export function afficherEasteregg() {
     // Append the modal to the body
     document.body.appendChild(modal);
 
+    
+
     // Create a button to trigger the modal
     const triggerButton = document.createElement('a');
-    triggerButton.textContent = 'Clique';
+    triggerButton.setAttribute('href', '#');
+    triggerButton.textContent = 'DOOM';
     triggerButton.style.marginTop = '10px';
 
     // Add an event listener to show the modal on button click
@@ -45,6 +48,8 @@ export function afficherEasteregg() {
         modal.style.visibility = 'hidden';
     });
 
+    // BR to space
+    loginArea.appendChild(document.createElement('br'));
     // Append the button to the loginArea
     loginArea.appendChild(triggerButton);
 }

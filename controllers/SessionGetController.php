@@ -17,9 +17,18 @@
             $sessionState->isLogged = isLogged();
             if(isLogged()) {
                 $sessionInfo = new stdClass();
-                $compteId = $_SESSION['compteId'];
                 $service = new CompteService();
-                $sessionInfo->login = $service->findById($compteId)->getLogin();
+                $compteId = $_SESSION['compteId'];
+                $compte = $service->findById($compteId);
+
+                $_SESSION['login'] = $compte->getLogin();
+                $_SESSION['pseudo'] = $compte->getPseudo();
+                $_SESSION['role'] = $compte->getRole()->getLabel();
+
+                $sessionInfo->login = $_SESSION['login'];
+                $sessionInfo->pseudo = $_SESSION['pseudo'];
+                $sessionInfo->role = $_SESSION['role'];
+                
                 $sessionState->userInfo = $sessionInfo;
             }
             return json_encode($sessionState);

@@ -105,6 +105,9 @@
 		}
 
 		public static function createFromRow($row) {
+			$roleService = new RoleService();
+			$role = $roleService->findById($row->fk_role);
+
 			$compte = new Compte();
 			$compte->setIdCompte( intval($row->id_compte) );
 			$compte->setLogin( $row->login );
@@ -117,7 +120,7 @@
 			$compte->setEstBanni( $row->estBanni );
 			$compte->setEnAttenteDeModeration( $row->enAttenteDeModeration );
 			// $compte->setFkRole( intval($row->fk_role) );
-			$compte->setRole( $row->role );
+			$compte->setRole( $role );
 			
 			return $compte;
 		}

@@ -47,7 +47,7 @@ const afficheLoginZone = function(sessionInfo) {
         loginArea.appendChild(document.createElement('br')); // On ajoute un saut de ligne
         // LOGIN
         afficheRegister();
-        afficherEasteregg();
+        
     }
 }
 
