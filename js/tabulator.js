@@ -89,6 +89,8 @@ export const afficheTabulator = function(data) {
                     const key = cell.getField();
                     const idCompte = cell.getRow().getData().idCompte;
 
+                    console.log(typeof newValue + " : " + newValue);
+
                     const myForm = new FormData();
                     myForm.append("route", "Compte")
                     myForm.append("id", idCompte);
@@ -125,7 +127,7 @@ export const afficheTabulator = function(data) {
                     myForm.append("route", "Compte")
                     myForm.append("id", idCompte);
                     myForm.append("action", key);
-                    myForm.append(key, newValue);
+                    myForm.append(key, + newValue);
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
                 }
@@ -141,7 +143,7 @@ export const afficheTabulator = function(data) {
                     myForm.append("route", "Compte")
                     myForm.append("id", idCompte);
                     myForm.append("action", key);
-                    myForm.append(key, newValue);
+                    myForm.append(key, + newValue);
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
                 }
@@ -157,7 +159,7 @@ export const afficheTabulator = function(data) {
                     myForm.append("route", "Compte")
                     myForm.append("id", idCompte);
                     myForm.append("action", key);
-                    myForm.append(key, newValue);
+                    myForm.append(key, + newValue);
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
                 }
@@ -173,7 +175,7 @@ export const afficheTabulator = function(data) {
                     myForm.append("route", "Compte")
                     myForm.append("id", idCompte);
                     myForm.append("action", key);
-                    myForm.append(key, newValue);
+                    myForm.append(key, + newValue);
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
                 }
