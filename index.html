@@ -6,23 +6,31 @@
     <title>BGE Blog</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator_site.min.css" rel="stylesheet">
+    <link href="https://tabulator.info/css/tabulator/tabulator_site.scss" rel="stylesheet">
 </head>
 <body>
-
+    
     <div id="header">
         <div id="loginArea"></div>
     </div>
     <div id="main"></div>
     <div id="footer"></div>
     
-<!-- Fenêtre modale -->
+    <!-- Fenêtre modale -->
     <div id="myModal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close" onclick="closeModal()">&times;</span>
             <div id="modalFormContainer"></div>
         </div>
     </div>
-
+    <div id="example-table" class="example-table tabulator"></div>
+    
+    <!-- Luxon (nécessaire pour le formatter datetime) -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+    <!-- Tabulator (bundle complet UMD) -->
+    <script src="https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script>
     <!-- Lien vers le fichier JavaScript externe -->
     <script type="module" src="js/script.js"></script>
     <script>

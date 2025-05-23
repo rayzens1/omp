@@ -44,7 +44,7 @@ class LoginPostController extends AbstractController implements IController {
         }
         $compte = Compte::createForCredential($this->login, $this->password);
         $id = $this->service->isValidCredential($compte);
-        if ( is_null($id) ) {
+        if ( is_null($id) ) { // Si id == null, c'est que le login ou le mot de passe est incorrect
             throw new HttpStatusException(499, "Invalid Credential");
         }
         login($id);

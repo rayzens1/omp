@@ -1,5 +1,6 @@
 import { myFetch } from './fetch.js';
 import { afficherEasteregg } from './easteregg.js';
+import { afficheTabulator, clearTabulatorArea } from './tabulator.js';
 
 // Avec les modules on doit attacher la fonction accueil à la fenêtre du DOM
 window.accueil = accueil;
@@ -25,13 +26,18 @@ function manageLoginArea() {
 
 const afficheLoginZone = function(sessionInfo) {
     console.log("Session Info :\n", sessionInfo);
+
     const loginArea = document.getElementById('loginArea');
     loginArea.innerHTML = ''; // On vide la zone de login
     if(sessionInfo.isLogged) {
+        console.log("Je suis connecté !")
+        console.log("id: "+sessionInfo.userInfo.id)
         // Si pas connecté, on affiche le formulaire de logout
         afficheLogout();
         afficheLogin(sessionInfo);
+        doTabulator();
     } else {
+        console.log("Je suis pas connecté !")
         let callBack = function(event) { doLogin(sessionInfo); };
         
         let aHrefLogin = document.createElement('a');
@@ -47,15 +53,14 @@ const afficheLoginZone = function(sessionInfo) {
         loginArea.appendChild(document.createElement('br')); // On ajoute un saut de ligne
         // LOGIN
         afficheRegister();
-        
+        clearTabulatorArea();
     }
 }
 
 function afficheLogout() {
     const container = document.getElementById('loginArea');
-    container.innerHTML = ''; // On vide la zone de login
 
-    let callBack = function(event) { doLogout(); };
+    let callBack = function() { doLogout(); };
 
     let aHrefLogout = document.createElement('a');
     aHrefLogout.setAttribute('href', '#');
@@ -88,7 +93,7 @@ const afficheLogin = function(sessionInfo) {
     const container = document.getElementById('loginArea');
     const login = document.createElement('h1');
     console.log(sessionInfo.userInfo.login);
-    login.textContent = sessionInfo.userInfo.login;
+    login.textContent = `Bienvenue ${sessionInfo.userInfo.pseudo} !`;
     container.appendChild(login);
 }
 
@@ -98,6 +103,12 @@ function prepareModal() {
     const container = document.getElementById('modalFormContainer');
     container.innerHTML = ''; // On vide la zone de login
     return container;
+}
+
+function clearLoginArea() {
+    // On va vider la zone de login
+    const container = document.getElementById('loginArea');
+    container.innerHTML = ''; // On vide la zone de login
 }
 
 function doLogin(sessionInfo) {
@@ -148,8 +159,9 @@ function doLogin(sessionInfo) {
 
         const dataCallback = function(event) {
             closeModal();
+            clearLoginArea();
             afficheLogout();
-            myFetch(null, afficheLogin, 'api.php?route=Session', 'GET') // Pas l'info du login
+            myFetch(null, afficheLoginZone, 'api.php?route=Session', 'GET') // Pas l'info du login
         };
 
         const errorCallback = function(error) {
@@ -167,8 +179,8 @@ function doLogin(sessionInfo) {
 }
 
 function doLogout() {
-
-    myFetch(null, afficheLoginZone, 'api.php?route=Logout', 'GET')
+    clearTabulatorArea();
+    myFetch(null, function() {myFetch(null, afficheLoginZone, 'api.php?route=Session', 'GET')}, 'api.php?route=Logout', 'GET')
 }
 
 function doRegister() {
@@ -293,4 +305,9 @@ function doRegister() {
 
     container.appendChild(form);
 
+}
+
+// On va afficher le tableau de tabulator
+function doTabulator() {
+    myFetch(null, afficheTabulator, 'api.php?route=Compte&action=findall', 'GET')
 }

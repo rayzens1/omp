@@ -17,4 +17,8 @@ class RoleGetController extends AbstractGetController implements IController {
         return $this->service;
     }
 
+    public function getRoleRequired(): int {
+        return 3; // ROLE_ADMIN
+    }
+
 }

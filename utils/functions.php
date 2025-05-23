@@ -22,6 +22,10 @@
         headerAndDie("HTTP/1.1 400 bad request: ". $msg);
     }
 
+    function _403_Forbidden($msg = ""){
+        headerAndDie("HTTP/1.1 403 Forbidden: ". $msg);
+    }
+
     function _404_Not_Found($msg = ""){
         headerAndDie("HTTP/1.1 404 Not Found: ". $msg);
     }
@@ -47,6 +51,8 @@ function raiseHttpStatus(HttpStatusException $exception):void{
         case 400 :
             _400_Bad_Request($exception->getMessage());
             break;
+        case 403 :
+            _403_Forbidden($exception->getMessage());
         case 405 :
             _405_Method_Not_Allowed($exception->getMessage());
             break;
@@ -158,7 +164,14 @@ function extractForm(): array {
     }
 
     function login(int $id) {
+        $service = new CompteService();
+        $compte = $service->findById($id);
+        
         $_SESSION[COMPTE_ID] = $id;
+        $_SESSION['login'] = $compte->getLogin();
+        $_SESSION['pseudo'] = $compte->getPseudo();
+        $_SESSION['roleLabel'] = $compte->getRole()->getLabel();
+        $_SESSION['roleId'] = $compte->getRole()->getIdRole();
     }
 
     // TODO : check if password is strong enough
