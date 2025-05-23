@@ -109,7 +109,58 @@
 		}
 
 		function update(IEntity $entity) {
-			throw new Exception("Not implemented");
+
+			/** @var Compte $entity */
+			$idCompte = $entity->getIdCompte();
+			$login = $entity->getLogin();
+			$password = $entity->getPassword();
+			$pseudo = $entity->getPseudo();
+			$dateCreation = $entity->getDateCreation();
+			$dateModification = $entity->getDateModification();
+			$estSupprime = $entity->getEstSupprime();
+			$estSignale = $entity->getEstSignale();
+			$estBanni = $entity->getEstBanni();
+			$enAttenteDeModeration = $entity->getEnAttenteDeModeration();
+			$fk_role = $entity->getRole()->getIdRole();
+
+			$pdo = BddSingleton::getInstance()->getPdo();
+
+			// Le login existe en table ?
+			$sql = "
+					UPDATE ".$this->getTableName()."
+					SET 
+						login                  = :login,
+						password               = :password,
+						pseudo                 = :pseudo,
+						dateCreation           = :dateCreation,
+						dateModification       = :dateModification,
+						estSupprime            = :estSupprime,
+						estSignale             = :estSignale,
+						estBanni               = :estBanni,
+						enAttenteDeModeration  = :enAttenteDeModeration,
+						fk_role                = :fk_role
+					WHERE ".$this->getPrimaryKey()." = :idCompte
+					";
+			$stmt = $pdo->prepare($sql);
+			$stmt->bindParam(1, $login, PDO::PARAM_STR);
+			$stmt->setFetchMode(PDO::FETCH_OBJ);
+			$stmt->execute([
+				':login'                   => $login,
+				':password'                => $password,
+				':pseudo'                  => $pseudo,
+				':dateCreation'            => $dateCreation,
+				':dateModification'        => $dateModification,
+				':estSupprime'             => $estSupprime,
+				':estSignale'              => $estSignale,
+				':estBanni'                => $estBanni,
+				':enAttenteDeModeration'   => $enAttenteDeModeration,
+				':fk_role'                 => $fk_role,
+				':idCompte'                => $idCompte,
+			]);
+			$affectedRows = $stmt->rowCount();
+			if (!$affectedRows>0) {
+				throw new HttpStatusException(404, "Nothing updated.");
+			}
 		}
 
 		function isValidCredential(Compte $compte) : ?int {
@@ -130,9 +181,6 @@
 			}
 			$idCompte = $row->id_compte;
 			$bddhash = $row->password;
-			error_log("password : $password");
-			error_log("bddhash : $bddhash");
-			$passwordhash = password_hash($password, PASSWORD_DEFAULT);
 			if (password_verify($password, $bddhash)) {
 				return $idCompte;
 			} else {
