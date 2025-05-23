@@ -35,7 +35,11 @@ const afficheLoginZone = function(sessionInfo) {
         // Si pas connecté, on affiche le formulaire de logout
         afficheLogout();
         afficheLogin(sessionInfo);
-        doTabulator();
+
+        // On affiche le tableau de tabulator si il est administrateur
+        if(sessionInfo.userInfo.idRole == 3) {
+            doTabulator();
+        }
     } else {
         console.log("Je suis pas connecté !")
         let callBack = function(event) { doLogin(sessionInfo); };
@@ -53,7 +57,6 @@ const afficheLoginZone = function(sessionInfo) {
         loginArea.appendChild(document.createElement('br')); // On ajoute un saut de ligne
         // LOGIN
         afficheRegister();
-        clearTabulatorArea();
     }
 }
 
@@ -309,5 +312,6 @@ function doRegister() {
 
 // On va afficher le tableau de tabulator
 function doTabulator() {
+    
     myFetch(null, afficheTabulator, 'api.php?route=Compte&action=findall', 'GET')
 }

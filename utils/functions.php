@@ -166,8 +166,9 @@ function extractForm(): array {
     function login(int $id) {
         $service = new CompteService();
         $compte = $service->findById($id);
+        /** @var Compte $compte */
         
-        $_SESSION[COMPTE_ID] = $id;
+        $_SESSION[COMPTE_ID] = $compte->getIdCompte();
         $_SESSION['login'] = $compte->getLogin();
         $_SESSION['pseudo'] = $compte->getPseudo();
         $_SESSION['roleLabel'] = $compte->getRole()->getLabel();
