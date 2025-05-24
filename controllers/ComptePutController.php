@@ -171,9 +171,12 @@ class ComptePutController extends AbstractController implements IController {
                 break;
         }
 
+        // On met à jour la date de modification
         $compte->setDateModification(date("Y-m-d H:i:s"));
+
+        // On met à jour le compte avec la nouvelle valeur
         $this->response = $this->service->update($compte);
-        // ICI METTER A JOUR LA DATE DE MODIFICATION
+
         $this->response = "";
     }
 

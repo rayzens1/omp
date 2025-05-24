@@ -170,7 +170,7 @@
 			$pdo = BddSingleton::getInstance()->getPdo();
 
 			// Le login existe en table ?
-			$sql = "SELECT id_compte, password FROM Compte WHERE login = ? LIMIT 1";
+			$sql = "SELECT id_compte, password, estSupprime, estBanni, enAttenteDeModeration FROM Compte WHERE login = ? LIMIT 1";
 			$stmt = $pdo->prepare($sql);
 			$stmt->bindParam(1, $login, PDO::PARAM_STR);
 			$stmt->setFetchMode(PDO::FETCH_OBJ);
@@ -182,6 +182,15 @@
 			$idCompte = $row->id_compte;
 			$bddhash = $row->password;
 			if (password_verify($password, $bddhash)) {
+				if($row->estSupprime) {
+					throw new HttpStatusException(499, "Compte supprimé");
+				}
+				if($row->estBanni) {
+					throw new HttpStatusException(499, "Compte banni");
+				}
+				if($row->enAttenteDeModeration) {
+					throw new HttpStatusException(499, "Compte en attente de modération");
+				}
 				return $idCompte;
 			} else {
 				return null;

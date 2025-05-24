@@ -169,8 +169,14 @@ function doLogin(sessionInfo) {
 
         const errorCallback = function(error) {
             console.log(error.message);
-            if("Invalid Credential" == error.message) {
-                alert("Votre login ou password est invalide ! ❌");
+
+            switch (error.message) {
+                case "Invalid Credential":
+                    alert("Votre login ou password est invalide ! ❌");
+                    break;
+                default:
+                    alert(error.message+" ❌");
+                    break;
             }
         }
 

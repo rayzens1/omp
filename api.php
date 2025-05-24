@@ -10,7 +10,7 @@
     try {
         $CONTROLLER = createController($FORM,$ROUTE);
         $response = $CONTROLLER->execute();
-        header('Content-Type: application/json');
+        header('Content-Type: application/json; charset=UTF-8');
         echo $response;
     } catch (HttpStatusException $exception){
         raiseHttpStatus($exception);

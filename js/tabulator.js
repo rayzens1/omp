@@ -33,7 +33,7 @@ export const afficheTabulator = function(data) {
         addRowPos: "top",
         history: true,
         pagination: "local",
-        paginationSize: 7,
+        paginationSize: 15,
         paginationCounter: "rows",
         movableColumns: true,
 
@@ -214,24 +214,7 @@ export const afficheTabulator = function(data) {
             },
 
         ],
-
-        // 3) Optionnel : callback après édition
-        // cellEdited: function(cell) {
-        //     const field    = cell.getField();
-        //     const value    = cell.getValue();
-        //     const rowData  = cell.getRow().getData();
-
-        //     console.log("Cell edited:", cell.getField(), "=>", cell.getValue());
-        //     // Ici, faites un fetch/axios pour persister la modif en base, ex :
-        //     // fetch("/api/comptes/" + cell.getRow().getData().idCompte, {method:"PATCH", body:JSON.stringify({[cell.getField()]:cell.getValue()})})
-        // },
-
-
     });
-
-    const printConsole = function() {
-        console.log("Print Console");
-    }
 };
 
 export function clearTabulatorArea() {
