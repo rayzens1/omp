@@ -37,7 +37,7 @@ const afficheLoginZone = function(sessionInfo) {
         afficheLogin(sessionInfo);
 
         // On affiche le tableau de tabulator si il est administrateur
-        if(sessionInfo.userInfo.idRole == 3) {
+        if(sessionInfo.userInfo.idRole >= 2) {
             doTabulator();
         }
     } else {
