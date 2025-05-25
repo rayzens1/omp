@@ -56,14 +56,33 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, newValue);
 
-                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             },
 
             { title: "Mot de passe", field: "password", editor: "input", headerFilter: "input" ,
                 cellEdited: cell => {
                     const newValue = cell.getValue();
-                    console.log("Cell edited:", cell.getField(), "=>", cell.getValue());
+                    const key = cell.getField();
+                    const idCompte = cell.getRow().getData().idCompte;
+
+                    const myForm = new FormData();
+                    myForm.append("route", "Compte")
+                    myForm.append("id", idCompte);
+                    myForm.append("action", key);
+                    myForm.append(key, newValue);
+
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             },
 
@@ -79,7 +98,12 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, newValue);
 
-                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             },
 
@@ -97,7 +121,12 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, newValue);
 
-                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             },
 
@@ -113,7 +142,12 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, newValue);
 
-                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             },
 
@@ -129,7 +163,12 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, + newValue);
 
-                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             },
 
@@ -145,7 +184,12 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, + newValue);
 
-                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             },
 
@@ -161,7 +205,12 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, + newValue);
 
-                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             },
 
@@ -177,7 +226,12 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, + newValue);
 
-                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                    myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                    errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                    }
                 }
             }, // headerFilter: "tickCross"
 
@@ -205,11 +259,16 @@ export const afficheTabulator = function(data) {
                         console.log("roleId : "+ roleId);
                         myForm.append("fk_role", roleId); // 1, 2 ou 3
 
-                        myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT");
+                        myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
+
+                        errorCallback = function(error) {
+                            alert("Erreur lors de la modification du rôle :", error);
+                            cell.restoreOldValue();
+                        }
                     }
 
                     
-                    myFetch(null, callback, "api.php?route=Role&action=findall", "GET");
+                    myFetch(null, callback, "api.php?route=Role&action=findall", "GET", errorCallback);
                 }
             },
 

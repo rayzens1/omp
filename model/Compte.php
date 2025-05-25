@@ -105,8 +105,8 @@
 		}
 
 		public static function createFromRow($row) {
-			$roleService = new RoleService();
-			$role = $roleService->findById($row->fk_role);
+			$roleService = new RoleService(); // Enlever
+			$role = $roleService->findById($row->fk_role); // Enlever
 
 			$compte = new Compte();
 			$compte->setIdCompte( intval($row->id_compte) );

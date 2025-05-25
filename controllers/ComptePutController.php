@@ -91,13 +91,21 @@ class ComptePutController extends AbstractController implements IController {
         }
     }
 
-    protected function getRoleRequired() : int {
-        return 3;
+    protected function getRoleRequiredForAction(string $action) : int {
+        switch ($action) {
+            case 'fk_role':
+                return 3; // Seul un admin peut changer le rôle d'un utilisateur
+            default:
+                return 3;
+        }
     }
 
     protected function checkRights() {
-        if($_SESSION['roleId'] != $this->getRoleRequired()) {
-            throw new HttpStatusException(403, "You don't have the right to access this resource !");
+        // On récupère le rôle de l'utilisateur connecté
+        // Ensuite in récupère le rôle requis pour l'action fournis dans le formulaire
+        // Et on compare les deux
+        if($_SESSION['roleId'] != $this->getRoleRequiredForAction($this->form['action'])) {
+            throw new HttpStatusException(403, "You don't have the right to change the role of a user !");
         }
     }
 
