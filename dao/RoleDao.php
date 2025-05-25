@@ -50,8 +50,9 @@
 		}
 
 		function insert(IEntity $entity) : int {
-			$entity->setIdRole(4);
-			return $entity->getIdRole();
+			// /** @var Role $entity */
+			// $entity->setIdRole(4);
+			// return $entity->getIdRole();
 			throw new Exception("Not implemented");
 		}
 

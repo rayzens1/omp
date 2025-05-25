@@ -50,7 +50,7 @@ abstract class AbstractGetController extends AbstractController implements ICont
     protected function checkRights() {
         
         if(!($_SESSION['roleId'] >= $this->getRoleRequired())) {
-            throw new HttpStatusException(403, "You don't have the right to access this resource !");
+            throw new HttpStatusException(403, "You don't have the right to access this resource !" );
         }
     }
 

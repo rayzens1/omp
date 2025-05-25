@@ -1,4 +1,5 @@
-import { afficheTabulator, clearTabulatorArea } from "./tabulator.js";
+import { afficheTabulatorUser, clearTabulatorArea } from "./tabulatorUser.js";
+import { afficheTabulatorArticle } from "./tabulatorArticle.js";
 import { myFetch } from "./fetch.js";
 
 export function showAdminMenu(container) {
@@ -18,14 +19,14 @@ export function showAdminMenu(container) {
     {
       id: 'option1',
       label: 'User',
-      action: () => myFetch(null, afficheTabulator, 'api.php?route=Compte&action=findall', 'GET'),
+      action: () => myFetch(null, afficheTabulatorUser, 'api.php?route=Compte&action=findall', 'GET'),
       clearCallback: clearTabulatorArea,
       roleIdRequired: 2
     },
     {
       id: 'option2',
       label: 'Article',
-      action: () => console.log('Chargement des articles'),
+      action: () => myFetch(null, afficheTabulatorArticle, 'api.php?route=Article&action=findall', 'GET'),
       clearCallback: () => console.log('clear Article')
     },
     {

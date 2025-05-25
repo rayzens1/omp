@@ -21,7 +21,7 @@
 			$stmt->execute();
 			$row = $stmt->fetch();
 			if (!$row) {
-				throw new HttpStatusException("Entity ".$this->getTableName()." not found ". $id, 404);
+				throw new HttpStatusException(404, "Entity ".$this->getTableName()." not found tt ". $id);
 			}
 
 			return $this->createEntityFromRow($row);
