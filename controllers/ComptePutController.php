@@ -95,8 +95,12 @@ class ComptePutController extends AbstractController implements IController {
         switch ($action) {
             case 'fk_role':
                 return 3; // Seul un admin peut changer le rôle d'un utilisateur
-            default:
+            case 'enAttenteDeModeration':
                 return 3;
+            case 'estBanni':
+                return 3;
+            default:
+                return 2;
         }
     }
 
