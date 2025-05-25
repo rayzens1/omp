@@ -27,7 +27,8 @@ export function showAdminMenu(container) {
       id: 'option2',
       label: 'Article',
       action: () => myFetch(null, afficheTabulatorArticle, 'api.php?route=Article&action=findall', 'GET'),
-      clearCallback: () => console.log('clear Article')
+      clearCallback: clearTabulatorArea,
+      roleIdRequired: 2
     },
     {
       id: 'option3',

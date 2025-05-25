@@ -87,9 +87,9 @@ class ArticlePutController extends AbstractController implements IController {
             case 'fk_auteur':
                 return 3; // Seul un admin peut changer le rôle d'un utilisateur
             case 'enAttenteDeModeration':
-                return 3;
+                return 2; // L'administrateur et les modérateurs peuvent accepter un articles - CDC
             case 'estSupprime':
-                return 3;
+                return 2; // Un modérateur peut supprimer un article - CDC
             default:
                 return 2;
         }

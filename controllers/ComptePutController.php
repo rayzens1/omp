@@ -98,7 +98,9 @@ class ComptePutController extends AbstractController implements IController {
             case 'enAttenteDeModeration':
                 return 3;
             case 'estBanni':
-                return 3;
+                return 3; // eul un administrateur peut bannir un compte - CDC
+            case 'estSignale':
+                return 2; // Un modérateur peut signaler un compte - CDC
             default:
                 return 2;
         }
