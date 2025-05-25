@@ -58,7 +58,7 @@ export const afficheTabulator = function(data) {
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                    errorCallback = function(error) {
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -79,7 +79,7 @@ export const afficheTabulator = function(data) {
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                    errorCallback = function(error) {
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -100,7 +100,7 @@ export const afficheTabulator = function(data) {
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                    errorCallback = function(error) {
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -123,7 +123,7 @@ export const afficheTabulator = function(data) {
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                    errorCallback = function(error) {
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -144,7 +144,7 @@ export const afficheTabulator = function(data) {
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                    errorCallback = function(error) {
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -165,7 +165,7 @@ export const afficheTabulator = function(data) {
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                    errorCallback = function(error) {
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -186,7 +186,7 @@ export const afficheTabulator = function(data) {
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                    errorCallback = function(error) {
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -207,7 +207,7 @@ export const afficheTabulator = function(data) {
 
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                    errorCallback = function(error) {
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -226,9 +226,10 @@ export const afficheTabulator = function(data) {
                     myForm.append("action", key);
                     myForm.append(key, + newValue);
 
+                    
                     myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
-
-                    errorCallback = function(error) {
+                    
+                    const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                     }
@@ -261,7 +262,7 @@ export const afficheTabulator = function(data) {
 
                         myFetch(myForm, function(data) {console.log("Modification réussie !")}, "api.php", "PUT", errorCallback);
 
-                        errorCallback = function(error) {
+                        const errorCallback = function(error) {
                             alert("Erreur lors de la modification du rôle :", error);
                             cell.restoreOldValue();
                         }
