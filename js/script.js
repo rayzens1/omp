@@ -1,6 +1,8 @@
 import { myFetch } from './fetch.js';
 import { afficherEasteregg } from './easteregg.js';
 import { afficheTabulator, clearTabulatorArea } from './tabulator.js';
+import { showAlert } from './alert.js';
+import { showAdminMenu, hideAdminMenu } from './adminMenu.js';
 
 // Avec les modules on doit attacher la fonction accueil à la fenêtre du DOM
 window.accueil = accueil;
@@ -35,10 +37,10 @@ const afficheLoginZone = function(sessionInfo) {
         // Si pas connecté, on affiche le formulaire de logout
         afficheLogout();
         afficheLogin(sessionInfo);
-
-        // On affiche le tableau de tabulator si il est administrateur
+        
+        // On affiche le menu admin si il est administrateur ou modérateur
         if(sessionInfo.userInfo.idRole >= 2) {
-            doTabulator();
+            showAdminMenu(loginArea);
         }
     } else {
         console.log("Je suis pas connecté !")
@@ -172,10 +174,12 @@ function doLogin(sessionInfo) {
 
             switch (error.message) {
                 case "Invalid Credential":
-                    alert("Votre login ou password est invalide ! ❌");
+                    showAlert("Votre login ou mot de passe est invalide ! ❌", "danger", container);
+                    // alert("Votre login ou password est invalide ! ❌");
                     break;
                 default:
-                    alert(error.message+" ❌");
+                    showAlert(`${error.message} ❌`, "danger", container);
+                    // alert(error.message+" ❌");
                     break;
             }
         }
@@ -266,7 +270,8 @@ function doRegister() {
 
         const dataCallback = function(event) {
             closeModal();
-            alert("Votre compte a été créé ! ✅");
+            showAlert("Votre login ou mot de passe est invalide ! ❌", "success", container);
+            //alert("Votre compte a été créé ! ✅");
         };
 
         const errorCallback = function(error) {
@@ -274,35 +279,43 @@ function doRegister() {
             console.log(error.message.split("-").length)
             if(error.message.split("-").length > 1) { // Possède un "-" tel que "Email already exists - Pseudo already exists"
                 let msg = error.message.split("-")[1].trim();
-                let msgObj = error.message.split("-")[0].trim();
+                let msgObj = error.message.split("-")[0].trim(); // Permet de récupérer le 'columnName_UNIQUE'
+                msgObj = msgObj.split("_")[0].trim()+"'"; // Enlève le _UNIQUE' de login_
 
                 switch (msg) {
                     case "already exists":
-                        alert(`le ${msgObj} existe déjà ! ❌`);
+                        //alert(`le ${msgObj} existe déjà ! ❌`);
+                        showAlert(`le ${msgObj} existe déjà ! ❌`, "danger", container);
                         break;
                     default:
-                        alert("Erreur inconnue ❌");
+                        showAlert("Erreur inconnue ❌", "danger", container);
                         break;
                 }
             } else { // Ne possède pas de "-" tels que "Email already exists"
                 switch (error.message) {
                     case "Email already exists":
-                        alert("Cet email existe déjà ! ❌");
+                        showAlert("Cet email existe déjà ! ❌", "danger", container);
+                        //alert("Cet email existe déjà ! ❌");
                         break;
                     case "Pseudo already exists":
-                        alert("Ce pseudo existe déjà ! ❌");
+                        showAlert("Ce pseudo existe déjà ! ❌", "danger", container);
+                        //alert("Ce pseudo existe déjà ! ❌");
                         break;
                     case "Password not same":
-                        alert("Les mots de passe ne correspondent pas ! ❌");
+                        showAlert("Les mots de passe ne correspondent pas ! ❌", "danger", container);
+                        //alert("Les mots de passe ne correspondent pas ! ❌");
                         break;
                     case "Invalid Credential":
-                        alert("Votre login ou password est invalide ! ❌");
+                        showAlert("Votre login ou password est invalide ! ❌", "danger", container);
+                        //alert("Votre login ou password est invalide ! ❌");
                         break;
                     case "Login already exists":
-                        alert("Ce login existe déjà ! ❌");
+                        showAlert("Ce login existe déjà ! ❌", "danger", container);
+                        //alert("Ce login existe déjà ! ❌");
                         break;
                     default:
-                        alert("Erreur inconnue ❌");
+                        showAlert("Erreur inconnue ❌", "danger", container);
+                        // alert("Erreur inconnue ❌");
                         break;
                 }
             }

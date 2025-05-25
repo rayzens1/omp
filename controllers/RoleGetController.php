@@ -18,7 +18,7 @@ class RoleGetController extends AbstractGetController implements IController {
     }
 
     public function getRoleRequired(): int {
-        return 3; // ROLE_ADMIN
+        return 2; // ROLE_ADMIN
     }
 
 }
