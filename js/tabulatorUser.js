@@ -277,6 +277,10 @@ export const afficheTabulatorUser = function(data) {
 
                     }
 
+                    const errorCallback = function(error) {
+                        alert("Erreur lors de la modification du rôle :", error);
+                        cell.restoreOldValue();
+                    }
                     
                     myFetch(null, callback, "api.php?route=Role&action=findall", "GET", errorCallback);
                 }

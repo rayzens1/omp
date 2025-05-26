@@ -85,7 +85,7 @@ class ArticlePutController extends AbstractController implements IController {
     protected function getRoleRequiredForAction(string $action) : int {
         switch ($action) {
             case 'fk_auteur':
-                return 3; // Seul un admin peut changer le rôle d'un utilisateur
+                return 3; // Seul un admin peut changer l'autheur'
             case 'enAttenteDeModeration':
                 return 2; // L'administrateur et les modérateurs peuvent accepter un articles - CDC
             case 'estSupprime':

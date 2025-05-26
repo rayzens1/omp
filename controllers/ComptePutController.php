@@ -94,11 +94,11 @@ class ComptePutController extends AbstractController implements IController {
     protected function getRoleRequiredForAction(string $action) : int {
         switch ($action) {
             case 'fk_role':
-                return 3; // Seul un admin peut changer le rôle d'un utilisateur
+                return 3; // Seul un admin peut changer le rôle d'un utilisateur - CDC
             case 'enAttenteDeModeration':
                 return 3;
             case 'estBanni':
-                return 3; // eul un administrateur peut bannir un compte - CDC
+                return 3; // seul un administrateur peut bannir un compte - CDC
             case 'estSignale':
                 return 2; // Un modérateur peut signaler un compte - CDC
             default:

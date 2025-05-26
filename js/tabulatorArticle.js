@@ -202,7 +202,7 @@ export const afficheTabulatorArticle = function(data) {
 
                 }
             },
-            { title: "Autheur", field: "auteur.pseudo", formatter: "plaintext", editor: "list", headerFilter: "input",
+            { title: "Auteur", field: "auteur.pseudo", formatter: "plaintext", editor: "list", headerFilter: "input",
                 editorParams: {
                     allowEmpty: false,
                     values: authorMap
